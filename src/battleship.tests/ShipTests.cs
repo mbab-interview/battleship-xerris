@@ -19,6 +19,13 @@ namespace battleship.tests
             var ship = new Ship { Coordinates = coords };
         }
 
+        [Fact]
+        public void ParseTests()
+        {
+            var ship = Ship.Parse(" A2a3A4 ");
+            Assert.Equal(3, ship.Coordinates.Count);
+        }
+
         [Theory]
         [InlineData("A0", "A1", "A2")]
         [InlineData("A1", "B1", "D1")]

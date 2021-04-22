@@ -19,7 +19,10 @@ namespace battleship
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((_, services) =>
                     services.AddTransient<IYesNoInput, YesNoInput>()
+                            .AddTransient<ICoordinateInput, CoordinateInput>()
                             .AddTransient<ConsoleWrapper>()
+                            .AddTransient<IGameBoardInitializer, GameBoardInitializer>()
+                            .AddTransient<IBattleshipGameRunner, BattleshipGameRunner>()
                             .AddTransient<GameLoop>());
 
         static void RunProgram(IServiceProvider services)

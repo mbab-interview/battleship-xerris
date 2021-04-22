@@ -9,38 +9,62 @@ namespace battleship
         private IReadOnlyCollection<Ship> ships;
 
         public IReadOnlyCollection<Ship> Ships{
-            get => ships;
+            private get => ships;
             init {
                 ValidateShips(value);
                 ships = value;
             }
         }
 
+        private string name = "player";
+
+        public string Name
+        {
+            get => name;
+            init {
+                var trimmedValue = value.Trim();
+                if (string.IsNullOrWhiteSpace(trimmedValue))
+                    throw new ArgumentException("Player name cannot be empty");
+                name = trimmedValue;
+            }
+        }
+
         public IReadOnlySet<Coordinate> Hits { get; private init; } = new HashSet<Coordinate>();
 
-        public IReadOnlyDictionary<Coordinate, string> Shots { get; private init; } = new Dictionary<Coordinate, string>();
+        public IReadOnlyDictionary<Coordinate, string> ReceivedBombs { get; private init; } = new Dictionary<Coordinate, string>();
 
-        public Player Shoot(Coordinate coordinate, Player enemy)
+        public bool AllShipsSunk => Ships.All(s => s.Coordinates.All(Hits.Contains));
+
+        public bool HasReceivedBombs => ReceivedBombs.Count > 0;
+
+        /// <summary>
+        /// Sends a bomb on this player.
+        /// </summary>
+        /// <param name="coordinate"></param>
+        /// <returns>A copy of the player with the updated Hits and Misses</returns>
+        public Player SendBomb(Coordinate coordinate)
         {
-            if (Shots.ContainsKey(coordinate))
+            if (ReceivedBombs.ContainsKey(coordinate))
                 // Should we let the user do that and simply waste its turn ?
+                // Requirement says "a single shot"
+                // Todo: update this and the test to meet requirements
                 throw new ArgumentOutOfRangeException("Coordinate already shot.");
 
-            var hitShip = enemy.Ships.FirstOrDefault(s => s.Coordinates.Contains(coordinate));
+            var hitShip = Ships.FirstOrDefault(s => s.Coordinates.Contains(coordinate));
 
             var newHits = new HashSet<Coordinate>(Hits);
-            var newShotList = new Dictionary<Coordinate, string>(Shots);
+            var newShotList = new Dictionary<Coordinate, string>(ReceivedBombs);
 
             if (hitShip is null)
             {
-                newShotList.Add(coordinate, "Miss");
+                newShotList.Add(coordinate, "M");
                 // Todo: make this in a more functionnal way.
                 Console.WriteLine("Miss");
-            } 
+            }
             else
             {
                 newHits.Add(coordinate);
-                newShotList.Add(coordinate, "Hit");
+                newShotList.Add(coordinate, "H");
                 if (hitShip.Coordinates.All(newHits.Contains))
                 {
                     // Todo: make this in a more functionnal way.
@@ -53,7 +77,7 @@ namespace battleship
                 }
             }
 
-            return this with { Hits = newHits, Shots = newShotList };
+            return this with { Hits = newHits, ReceivedBombs = newShotList };
         }
 
         private void ValidateShips(IReadOnlyCollection<Ship> ships)

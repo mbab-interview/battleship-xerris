@@ -6,11 +6,12 @@ namespace battleship.tests
     public class GameLoopTests
     {
         private readonly IYesNoInput yesNoInput = Substitute.For<IYesNoInput>();
+        private readonly IBattleshipGameRunner gameRunner = Substitute.For<IBattleshipGameRunner>();
         private GameLoop gameLoop;
 
         public GameLoopTests()
         {
-            gameLoop = new GameLoop(yesNoInput);
+            gameLoop = new GameLoop(gameRunner, yesNoInput);
         }
 
         [Fact]
@@ -31,6 +32,7 @@ namespace battleship.tests
 
             // Then
             Assert.True(true); // We are not stuck in infinite loop
+            gameRunner.Received(50).RunGame(); // Game was run 50 times
         }
     }
 }

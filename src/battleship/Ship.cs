@@ -16,6 +16,21 @@ namespace battleship
             }
         }
 
+        /// <summary>
+        /// This accepts a string with the coordinates in a single string and creates the proper coordinates
+        /// i.e A1A2A3 will create a ship with coordinates A1, A2 and A3
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public static Ship Parse(string input)
+        {
+            var coordinates = input.Trim().SplitInParts(2).Select(Coordinate.Parse);
+            return new Ship
+            {
+                Coordinates = coordinates.ToList()
+            };
+        }
+
         private void ValidateCoordinates(IEnumerable<Coordinate> coordinates)
         {
             if (coordinates is null)

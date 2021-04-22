@@ -41,12 +41,14 @@ namespace battleship
 
         public static Coordinate Parse(string input)
         {
-            if (input.Length != 2)
-                throw new ArgumentOutOfRangeException("a coordinate is composed of a letter followed by a number");
+            var trimmedInput = input.Trim();
+            if (trimmedInput.Length != 2)
+                throw new ArgumentOutOfRangeException("a coordinate is composed of a letter followed by a digit");
 
-            char x = input[0];
+            char x = trimmedInput[0];
 
-            int y = int.Parse(input.Substring(1, 1));
+            if (!int.TryParse(trimmedInput.Substring(1, 1), out int y))
+                throw new ArgumentOutOfRangeException("a coordinate is composed of a letter followed by a digit");
 
             return new Coordinate
             {

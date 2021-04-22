@@ -17,6 +17,7 @@ namespace battleship.tests
         [InlineData("e6", 'e', 6)]
         [InlineData("h8", 'h', 8)]
         [InlineData("H8", 'h', 8)]
+        [InlineData("  H8   ", 'h', 8)]
         public void Parse_ValidValues(string input, char expectedX, int expectedY)
         {
             var coordinate = Coordinate.Parse(input);
