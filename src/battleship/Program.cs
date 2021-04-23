@@ -28,7 +28,6 @@ namespace battleship
         static void RunProgram(IServiceProvider services)
         {
             var gameLoop = services.GetRequiredService<GameLoop>();
-
             gameLoop.Run();
         }
     }
