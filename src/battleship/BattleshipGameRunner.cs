@@ -29,11 +29,10 @@ namespace battleship
                     gameBoard = gameBoard.PlayTurn((p) =>
                     {
                         Console.WriteLine($"It is {p.Name}'s turn");
-                        // Todo: print additionnal contextual data.
+                        // Todo: print additionnal contextual data like previous shots taken.
                         return coordinateInput.GetCoordinate();
                     });
                 }
-                // Todo: use specific exceptions.
                 catch (ArgumentOutOfRangeException ex)
                 {
                     Console.WriteLine(ex.Message);
