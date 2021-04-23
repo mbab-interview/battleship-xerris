@@ -13,7 +13,19 @@ dotnet run --project .\src\battleship\battleship.csproj
 
 ### Docker
 
-Your can use the provided DockerFile. Note
+Your can build it using the provided Dockerfile.
+
+```powershell
+docker build -t mbabin-battleship .
+```
+
+To run it:
+
+```powershell
+docker run --rm -it mbabin-battleship
+```
+
+
 
 ## Code Coverage
 
