@@ -33,6 +33,9 @@ msbuild.log
 msbuild.err
 msbuild.wrn
 
-# Visual Studio 2015
+# Visual Studio 2019
 .vs/
+
+# other
 *.cache
+**/TestResults/
